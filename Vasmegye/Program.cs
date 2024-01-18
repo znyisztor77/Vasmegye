@@ -48,10 +48,8 @@ namespace Vasmegye
         }
 
         private static void szemelyiSzam(List<Adatok> vasmegye)
-        {
-            
-           
-                
+        {           
+                         
             Console.WriteLine("1 sor");
             string szemszamadat1 = vasmegye[2].nem.ToString() + vasmegye[2].szuldatum.ToString() + vasmegye[2].azonosito.ToString();
             Console.WriteLine(szemszamadat1);
@@ -95,21 +93,7 @@ namespace Vasmegye
                         vasAdatok.Add(vasAdat);
                     }
                 Console.WriteLine("Sikeres fájl beolvasás!");
-            }
-
-            /*string sor;
-            List<Lift> liftadatok = new List<Lift>();
-            StreamReader sr = new StreamReader(fajlnev);
-            while (!sr.EndOfStream)
-            {
-                Lift liftadat = new Lift();
-                sor = sr.ReadLine();
-                liftadat.idoPont = sor.Split(' ')[0];
-                liftadat.kartyaSorszam = Convert.ToInt32(sor.Split(' ')[1]);
-                liftadat.indulasSzint = Convert.ToInt32(sor.Split(' ')[2]);
-                liftadat.celSzint = Convert.ToInt32(sor.Split('')[3]);
-                liftadatok.Add(liftadat);
-            }*/
+            }           
 
             return vasAdatok;
         }
