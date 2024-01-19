@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,14 +27,85 @@ namespace Vasmegye
             List<Adatok> vasmegye = new List<Adatok>();
                     
             vasmegye  = adatBeolvas(fajlnev);
-            szemelyiSzam(vasmegye);
+            CdvEll(vasmegye);
                        
             Console.WriteLine($"5.feladat: Vasmegyében a vizsgált évek alatt {vasmegye.Count} csecsemő született ");
 
             Console.Write("6.feladat: ");
+            // 6. feladat
             fiukSzamol(vasmegye);
+            // 7-8. feladat
+            szuletesEvekStatisztika(vasmegye);
             Console.ReadKey();
 
+        }
+
+         
+
+        private static void szuletesEvekStatisztika(List<Adatok> vasmegye)
+        {
+            int[] evekszamol = new int[vasmegye.Count];
+            for(int i = 0; i<vasmegye.Count; i++)
+            {                
+                int ev =Convert.ToInt32( vasmegye[i].szuldatum.Substring(0,1));
+                
+                if (ev != 9)
+                {
+                   string szam1 = "20" + vasmegye[i].szuldatum.Substring(0, 2);
+                    evekszamol[i] = Convert.ToInt32(szam1) ;
+                }
+                else
+                {
+                    string szam2 = "19" + vasmegye[i].szuldatum.Substring(0, 2);
+                    evekszamol[i] = Convert.ToInt32(szam2);
+                }
+            }
+
+            int min = evekszamol[0];
+            int max = evekszamol[0];
+            int db = 0;
+            
+            for(int i = 0; i< evekszamol.Length; i++)
+            {
+                if (min > evekszamol[i])
+                {
+                    min = evekszamol[i];
+                    
+                }
+                else if(max < evekszamol[i])
+                { 
+                    max = evekszamol[i];
+                }
+            }
+            int elso = min;
+
+            for(int i = 0;i< evekszamol.Length; i++)
+            {
+                if (evekszamol[i] == min)
+                {
+                    db++;
+                }
+            }
+            Console.WriteLine($"7. feladat: A vizsgált időszak: {min} - {max}");
+
+            int[] evszamok = { 1998, 1999, 2000, 2001 };
+            int evszam_db = 0;
+
+            Console.WriteLine($"8. feladat: Statisztika");
+
+            for (int i = 0; i < evszamok.Length; i++)
+            {
+                for (int j = 0; j < evekszamol.Length; j++)
+                {
+                    if (evszamok[i] == evekszamol[j])
+                    {
+                        evszam_db++;
+                    }
+                }
+
+                Console.WriteLine($"\t {evszamok[i]} - {evszam_db}");
+                evszam_db = 0;
+            }           
         }
 
         private static void fiukSzamol(List<Adatok> vasmegye)
@@ -47,10 +119,10 @@ namespace Vasmegye
             Console.WriteLine($"A fiúk száma: {szamol}");
         }
 
-        private static void szemelyiSzam(List<Adatok> vasmegye)
+        private static void CdvEll(List<Adatok> vasmegye)
         {           
                          
-            Console.WriteLine("1 sor");
+            Console.WriteLine("Egy sor ellenörzése: ");
             string szemszamadat1 = vasmegye[2].nem.ToString() + vasmegye[2].szuldatum.ToString() + vasmegye[2].azonosito.ToString();
             Console.WriteLine(szemszamadat1);
 
@@ -62,8 +134,8 @@ namespace Vasmegye
                 leptek--;
             }
             osszeg = osszeg % 11;
-            Console.Write("Az eredmény:  ");
-            Console.WriteLine(osszeg);
+            Console.WriteLine($"Az eredmény: {osszeg}");
+            Console.WriteLine("Ellenörzés OK!");
         }
 
         private static List<Adatok> adatBeolvas(string fajlnev)
